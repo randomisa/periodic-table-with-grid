@@ -11,6 +11,10 @@ import { strict } from 'assert';
 /******************************************************************
 // 1. Global variables
 ******************************************************************/
+// other variables
+
+let boxShadowBtn = "grey 0px 0px 2px 4px";
+
 // for matter_categories
 let gasMatterArray = [];
 let solidMatterArray = [];
@@ -32,7 +36,6 @@ let unknownMatterArray = [];
 let metalHeadlineMatterTypesBtn = document.querySelector(".metal_headline");
 let nonMetalMatterTypesBtn = document.querySelector("nonmetal_headline");
 
-
 function MatterTypesBtnProperties(colorBackground, colorHovered, noSelection, elementsClassName, elementsIdArray) {
     this.colorBackground = colorBackground;
     this.colorHovered = colorHovered;
@@ -43,8 +46,8 @@ function MatterTypesBtnProperties(colorBackground, colorHovered, noSelection, el
 };
 
 const matterTypes = {
-    alkaliMetal: new MatterTypesBtnProperties("rgb(197, 212, 255)", "pink", "green", ".alkali-metal", alkaliMetalArray),
-    alkalineEarthMetal: new MatterTypesBtnProperties("rgb(255, 148, 148)", "pink", "green", ".alkaline-earth-metal", alkalineEarthMetalArray),
+    alkaliMetal: new MatterTypesBtnProperties("rgb(197, 212, 255)", "rgb(160, 185, 255)", "green", ".alkali-metal", alkaliMetalArray),
+    alkalineEarthMetal: new MatterTypesBtnProperties("rgb(255, 148, 148)", "rgb(230, 127, 127)", "green", ".alkaline-earth-metal", alkalineEarthMetalArray),
     lanthanide: new MatterTypesBtnProperties("#c3ffc7", "pink", "green", ".lanthanide", lanthanideArray),
     actinide: new MatterTypesBtnProperties("rgb(84, 181, 91)", "pink", "green", ".actinide", actinideArray),
     transitionMetal: new MatterTypesBtnProperties("rgb(255, 202, 164)", "pink", "green", ".transition-metal", transitionMetalArray),
@@ -69,10 +72,10 @@ function matterCategoryBtnProperties(colorBackground, colorHovered, colorFont, n
 };
 
 const matterCategories = {
-    gas: new matterCategoryBtnProperties("rgb(177, 0, 0)", "pink", "white", "violet", ".gas", gasMatterArray),
-    solid: new matterCategoryBtnProperties("#010101", "pink", "white", "violet", ".solid", solidMatterArray),
-    liquid: new matterCategoryBtnProperties("#288300", "pink", "white", "violet", ".liquid", liquidMatterArray),
-    unknown: new matterCategoryBtnProperties("#868686", "pink", "white", "violet", ".unknown", notNaturalMatterArray),
+    gas: new matterCategoryBtnProperties("rgb(177, 0, 0)", "rgb(255, 65, 65)", "white", "violet", ".gas", gasMatterArray),
+    solid: new matterCategoryBtnProperties("#010101", "rgb(74, 74, 74)", "white", "violet", ".solid", solidMatterArray),
+    liquid: new matterCategoryBtnProperties("#288300", "rgb(78, 218, 16)", "white", "violet", ".liquid", liquidMatterArray),
+    unknown: new matterCategoryBtnProperties("#868686", "rgb(185, 185, 185)", "white", "violet", ".unknown", notNaturalMatterArray),
 };
 
 const matterCategoriesArray = Object.entries(matterCategories);
@@ -358,23 +361,55 @@ function periodicTablePresenterGenerator() {
 function matterTypesBtnConfiguration() {
     matterTypesArray.forEach((configurator) => {
 
+        initMatterTypesBtn();
 
+        document.querySelector(configurator[1].elementsClassName).addEventListener("mouseover", function() {
+            configurator[1].elementBtn.style.backgroundColor = configurator[1].colorHovered;
+            configurator[1].elementBtn.style.color = configurator[1].colorFont;
+            configurator[1].elementBtn.style.boxShadow = boxShadowBtn;
+        });
+
+        document.querySelector(configurator[1].elementsClassName).addEventListener("mouseleave", function() {
+            initMatterTypesBtn();
+        });
+    });
+};
+
+function initMatterTypesBtn() {
+    matterTypesArray.forEach((configurator) => {
         configurator[1].elementBtn.style.backgroundColor = configurator[1].colorBackground;
-        
-        console.log("The matterTypesBtnConfigurator works!!!");
-
+        configurator[1].elementBtn.style.boxShadow = "";
     });
 };
 
 function matterCategoriesBtnConfiguration() {
+    matterCategoriesArray.forEach((configurator, e) => {
+
+        initMatterCategorizationBtn();
+
+        document.querySelector(configurator[1].elementsClassName).addEventListener("mouseover", function() {
+
+            configurator[1].elementBtn.style.backgroundColor = configurator[1].colorHovered;
+            configurator[1].elementBtn.style.color = configurator[1].colorFont;
+
+            configurator[1].elementBtn.style.boxShadow = boxShadowBtn;
+
+        });
+
+        document.querySelector(configurator[1].elementsClassName).addEventListener("mouseleave", function() {
+
+            initMatterCategorizationBtn();
+
+        });
+
+    });
+};
+
+function initMatterCategorizationBtn() {
     matterCategoriesArray.forEach((configurator) => {
-
         configurator[1].elementBtn.style.backgroundColor = configurator[1].colorBackground;
-        
         configurator[1].elementBtn.style.color = configurator[1].colorFont;
-
-        console.log("The matterCategoriesBtnConfiguration als works!!!");
-
+        configurator[1].elementBtn.style.boxShadow = "";
     });
 };
 
