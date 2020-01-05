@@ -69,11 +69,11 @@ function matterCategoryBtnProperties(colorBackground, colorHovered, colorFont, n
 };
 
 const matterCategories = {
-    gas: new matterCategoryBtnProperties("rgb(44, 41, 255)", "pink", "green", "violet", ".gas"),
-    solid: new matterCategoryBtnProperties("#010101", "pink", "green", "violet", ".solid"),
-    liquid: new matterCategoryBtnProperties("#288300", "pink", "green", "violet", ".liquid"),
-    unknown: new matterCategoryBtnProperties("#868686", "pink", "green", "violet", ".unknown"),
-}
+    gas: new matterCategoryBtnProperties("rgb(177, 0, 0)", "pink", "white", "violet", ".gas", gasMatterArray),
+    solid: new matterCategoryBtnProperties("#010101", "pink", "white", "violet", ".solid", solidMatterArray),
+    liquid: new matterCategoryBtnProperties("#288300", "pink", "white", "violet", ".liquid", liquidMatterArray),
+    unknown: new matterCategoryBtnProperties("#868686", "pink", "white", "violet", ".unknown", notNaturalMatterArray),
+};
 
 const matterCategoriesArray = Object.entries(matterCategories);
 console.log(matterCategoriesArray);
@@ -102,7 +102,7 @@ elementBoxesGenerator();
 elementBoxesColorConfiguration();
 
 //add color to each element number based on their matter type (comes from states of matter)
-mattterCategorizationConfigurator();
+matterCategorizationConfigurator();
 
 
 /******************************************************************
@@ -124,29 +124,13 @@ matterTypesBtnConfiguration();
 
 console.log(matterTypesArray);
 
-function matterTypesBtnConfiguration() {
-    matterTypesArray.forEach((configurator) => {
-
-        configurator[1].elementBtn.style.backgroundColor = configurator[1].colorBackground;
-        console.log("The matterTypesBtnConfigurator works!!!");
-
-    });
-};
-
 /******************************************************************
 // 6. Matter Categorization Buttons
 ******************************************************************/
 
 matterCategoriesBtnConfiguration();
 
-function matterCategoriesBtnConfiguration() {
-    matterCategoriesArray.forEach((configurator) => {
 
-        configurator[1].elementBtn.style.backgroundColor = configurator[1].colorBackground;
-        console.log("The matterCategoriesBtnConfiguration!!!");
-
-    });
-};
 
 
 /*_____________________________________________________________*/
@@ -257,15 +241,10 @@ function elementBoxesGenerator() {
 
         // pushing Matter into Arrays for gas, solid, liquid, unkown
         if (periodicEl.phase === "Gas") {
-            
             gasMatterArray.push(periodicEl.symbol.toLowerCase());
-
         } else if (periodicEl.phase === "Solid" && periodicEl.number < 104) {
-
             solidMatterArray.push(periodicEl.symbol.toLowerCase());
-        
         } else if (periodicEl.phase === "Liquid") {
-
             liquidMatterArray.push(periodicEl.symbol.toLowerCase());
         } else if (periodicEl.number > 103) {
             notNaturalMatterArray.push(periodicEl.symbol.toLowerCase());
@@ -306,25 +285,16 @@ function elementBoxesColorConfiguration() {
 };
 
 
-function mattterCategorizationConfigurator() {
 
-    gasMatterArray.forEach(element => {
-        document.querySelector("#" + element + " .number").style.color = "#FE0101";
-    });
-    
-    solidMatterArray.forEach(element => {
-        document.querySelector("#" + element + " .number").style.color = "#010101";
+function matterCategorizationConfigurator() {
+
+    matterCategoriesArray.forEach(element => {
+        element[1].elementsIdArray.forEach(configurator => {
+            document.querySelector("#" + configurator + " .number").style.color = element[1].colorBackground;
+        });
     });
 
-    liquidMatterArray.forEach(element => {
-        document.querySelector("#" + element + " .number").style.color = "#288300";
-    });
-    
-    notNaturalMatterArray.forEach(element => {
-        document.querySelector("#" + element + " .number").style.color = "#868686";
-    });
 };
-
 
 function periodicTablePresenterGenerator() {
 
@@ -385,5 +355,27 @@ function periodicTablePresenterGenerator() {
     });    
 };
 
+function matterTypesBtnConfiguration() {
+    matterTypesArray.forEach((configurator) => {
+
+
+        configurator[1].elementBtn.style.backgroundColor = configurator[1].colorBackground;
+        
+        console.log("The matterTypesBtnConfigurator works!!!");
+
+    });
+};
+
+function matterCategoriesBtnConfiguration() {
+    matterCategoriesArray.forEach((configurator) => {
+
+        configurator[1].elementBtn.style.backgroundColor = configurator[1].colorBackground;
+        
+        configurator[1].elementBtn.style.color = configurator[1].colorFont;
+
+        console.log("The matterCategoriesBtnConfiguration als works!!!");
+
+    });
+};
 
 //[].forEach.call(document.querySelectorAll("*"),function(a){a.style.outline="1px solid #"+(~~(Math.random()*(1<<24))).toString(16)})

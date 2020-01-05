@@ -20,6 +20,12 @@
         width: 100%;
     }
 
+    .metal_headline,
+    .nonmetal_headline {
+        font-weight: bold;
+        letter-spacing: 1px;
+    }
+
     .metalloids,
     .unknown-properties {
         align-items: center;
