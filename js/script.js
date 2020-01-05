@@ -58,6 +58,27 @@ const matterTypes = {
 const matterTypesArray = Object.entries(matterTypes);
 
 
+function matterCategoryBtnProperties(colorBackground, colorHovered, colorFont, noSelection, elementsClassName, elementsIdArray) {
+    this.colorBackground = colorBackground;
+    this.colorHovered = colorHovered;
+    this.colorFont = colorFont;
+    this.noSelection = noSelection;
+    this.elementsClassName = elementsClassName;
+    this.elementBtn = document.querySelector(elementsClassName);
+    this.elementsIdArray = elementsIdArray;
+};
+
+const matterCategories = {
+    gas: new matterCategoryBtnProperties("rgb(44, 41, 255)", "pink", "green", "violet", ".gas"),
+    solid: new matterCategoryBtnProperties("#010101", "pink", "green", "violet", ".solid"),
+    liquid: new matterCategoryBtnProperties("#288300", "pink", "green", "violet", ".liquid"),
+    unknown: new matterCategoryBtnProperties("#868686", "pink", "green", "violet", ".unknown"),
+}
+
+const matterCategoriesArray = Object.entries(matterCategories);
+console.log(matterCategoriesArray);
+
+
 /******************************************************************
 // 2. Make Row
 ******************************************************************/
@@ -97,9 +118,11 @@ periodicTablePresenterGenerator();
 
 /******************************************************************
 // 5. Matter Types Buttons
-// ******************************************************************/
+******************************************************************/
 
 matterTypesBtnConfiguration();
+
+console.log(matterTypesArray);
 
 function matterTypesBtnConfiguration() {
     matterTypesArray.forEach((configurator) => {
@@ -110,13 +133,20 @@ function matterTypesBtnConfiguration() {
     });
 };
 
+/******************************************************************
+// 6. Matter Categorization Buttons
+******************************************************************/
 
-console.log(matterTypesArray[4][1].elementBtn);
+matterCategoriesBtnConfiguration();
 
+function matterCategoriesBtnConfiguration() {
+    matterCategoriesArray.forEach((configurator) => {
 
-// console.log(matterTypesBtn.alkaliMetal.colorBackground);
-// console.log(matterTypesBtn.alkaliMetal.colorBackground);
+        configurator[1].elementBtn.style.backgroundColor = configurator[1].colorBackground;
+        console.log("The matterCategoriesBtnConfiguration!!!");
 
+    });
+};
 
 
 /*_____________________________________________________________*/
