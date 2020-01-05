@@ -1,0 +1,18 @@
+.container .row_group {
+    display: grid;
+    grid-area: 1 / 1;
+    grid-template-columns: repeat(20, calc(1150px / 20));
+    grid-template-rows: repeat(12, 60px);
+
+    .middle_pos {
+        align-items: center;
+        display: flex;
+        justify-content: center;
+    }
+
+    .group {
+        align-self: center;
+        justify-self: end;
+        writing-mode: vertical-rl;
+    }
+}

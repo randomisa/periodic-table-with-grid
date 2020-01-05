@@ -1,0 +1,17 @@
+.container .column_period {
+    display: grid;
+    grid-area: 1 / 1;
+    grid-template-columns: repeat(20, calc(1150px / 20));
+    grid-template-rows: repeat(12, 60px);
+    
+    .middle_pos {
+        align-items: center;
+        display: flex;
+        justify-content: center;
+    }
+
+    .period {
+        align-self: end;
+        justify-self: center;
+    }
+}

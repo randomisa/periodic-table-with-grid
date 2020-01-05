@@ -1,0 +1,45 @@
+.container .presenter {
+    border: 1px solid black;
+    grid-area: 2 / 4 / span 3 / span 3;
+    height: 78%;
+    margin: 12px 0 0 25px;
+    width: 82%;
+
+    .pad_left {
+        padding: 0 0 5px 10px;
+    }
+
+    .p_number {
+        color: #010101;
+        font-size: 20px;
+        padding-top: 10px;
+    }
+
+    .p_symbol {
+        font-size: 30px;
+        font-weight: bold;
+    }
+
+    .p_name {
+        font-size: 18px;
+
+    }
+
+    .p_atomic_mass {
+        font-size: 18px;
+    }
+
+    .p_shells {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        transform: translateX(112px) translateY(10px);
+
+        .shells_numbers {
+            // direction: rtl;
+            // text-align: start;
+            text-align: right;
+        }
+    }
+
+}

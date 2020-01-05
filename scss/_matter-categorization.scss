@@ -1,0 +1,31 @@
+.container .matter_categorization {
+    display: grid;
+    grid-area: 1 / 1;
+    grid-template-columns: repeat(20, calc(1150px / 20));
+    grid-template-rows: repeat(12, 60px);
+
+    .matter_layout {
+        align-self: center;
+        align-items: center;
+        border: 0.5px solid black;
+        border-radius: 5px;
+        display: flex;
+        height: 31%;
+        justify-content: center;
+        margin: 0 0px 0 2.5px;
+        width: 90%;
+    }
+
+    .gas {
+        grid-area: 2 / 14;
+    }
+    .solid {
+        grid-area: 2 / 15;
+    }
+    .liquid {
+        grid-area: 2 / 16;
+    }
+    .unknown {
+        grid-area: 2 / 17;
+    }
+}
