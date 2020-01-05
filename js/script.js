@@ -11,6 +11,10 @@ import { strict } from 'assert';
 /******************************************************************
 // 1. Global variables
 ******************************************************************/
+// other variables
+
+let boxShadowBtn = "grey 0px 0px 2px 4px";
+
 // for matter_categories
 let gasMatterArray = [];
 let solidMatterArray = [];
@@ -32,7 +36,6 @@ let unknownMatterArray = [];
 let metalHeadlineMatterTypesBtn = document.querySelector(".metal_headline");
 let nonMetalMatterTypesBtn = document.querySelector("nonmetal_headline");
 
-
 function MatterTypesBtnProperties(colorBackground, colorHovered, noSelection, elementsClassName, elementsIdArray) {
     this.colorBackground = colorBackground;
     this.colorHovered = colorHovered;
@@ -43,8 +46,8 @@ function MatterTypesBtnProperties(colorBackground, colorHovered, noSelection, el
 };
 
 const matterTypes = {
-    alkaliMetal: new MatterTypesBtnProperties("rgb(197, 212, 255)", "pink", "green", ".alkali-metal", alkaliMetalArray),
-    alkalineEarthMetal: new MatterTypesBtnProperties("rgb(255, 148, 148)", "pink", "green", ".alkaline-earth-metal", alkalineEarthMetalArray),
+    alkaliMetal: new MatterTypesBtnProperties("rgb(197, 212, 255)", "rgb(160, 185, 255)", "green", ".alkali-metal", alkaliMetalArray),
+    alkalineEarthMetal: new MatterTypesBtnProperties("rgb(255, 148, 148)", "rgb(230, 127, 127)", "green", ".alkaline-earth-metal", alkalineEarthMetalArray),
     lanthanide: new MatterTypesBtnProperties("#c3ffc7", "pink", "green", ".lanthanide", lanthanideArray),
     actinide: new MatterTypesBtnProperties("rgb(84, 181, 91)", "pink", "green", ".actinide", actinideArray),
     transitionMetal: new MatterTypesBtnProperties("rgb(255, 202, 164)", "pink", "green", ".transition-metal", transitionMetalArray),
@@ -56,6 +59,27 @@ const matterTypes = {
 };
 
 const matterTypesArray = Object.entries(matterTypes);
+
+
+function matterCategoryBtnProperties(colorBackground, colorHovered, colorFont, noSelection, elementsClassName, elementsIdArray) {
+    this.colorBackground = colorBackground;
+    this.colorHovered = colorHovered;
+    this.colorFont = colorFont;
+    this.noSelection = noSelection;
+    this.elementsClassName = elementsClassName;
+    this.elementBtn = document.querySelector(elementsClassName);
+    this.elementsIdArray = elementsIdArray;
+};
+
+const matterCategories = {
+    gas: new matterCategoryBtnProperties("rgb(177, 0, 0)", "rgb(255, 65, 65)", "white", "violet", ".gas", gasMatterArray),
+    solid: new matterCategoryBtnProperties("#010101", "rgb(74, 74, 74)", "white", "violet", ".solid", solidMatterArray),
+    liquid: new matterCategoryBtnProperties("#288300", "rgb(78, 218, 16)", "white", "violet", ".liquid", liquidMatterArray),
+    unknown: new matterCategoryBtnProperties("#868686", "rgb(185, 185, 185)", "white", "violet", ".unknown", notNaturalMatterArray),
+};
+
+const matterCategoriesArray = Object.entries(matterCategories);
+console.log(matterCategoriesArray);
 
 
 /******************************************************************
@@ -81,7 +105,7 @@ elementBoxesGenerator();
 elementBoxesColorConfiguration();
 
 //add color to each element number based on their matter type (comes from states of matter)
-mattterCategorizationConfigurator();
+matterCategorizationConfigurator();
 
 
 /******************************************************************
@@ -97,25 +121,18 @@ periodicTablePresenterGenerator();
 
 /******************************************************************
 // 5. Matter Types Buttons
-// ******************************************************************/
+******************************************************************/
 
 matterTypesBtnConfiguration();
 
-function matterTypesBtnConfiguration() {
-    matterTypesArray.forEach((configurator) => {
+console.log(matterTypesArray);
 
-        configurator[1].elementBtn.style.backgroundColor = configurator[1].colorBackground;
-        console.log("The matterTypesBtnConfigurator works!!!");
+/******************************************************************
+// 6. Matter Categorization Buttons
+******************************************************************/
 
-    });
-};
+matterCategoriesBtnConfiguration();
 
-
-console.log(matterTypesArray[4][1].elementBtn);
-
-
-// console.log(matterTypesBtn.alkaliMetal.colorBackground);
-// console.log(matterTypesBtn.alkaliMetal.colorBackground);
 
 
 
@@ -227,15 +244,10 @@ function elementBoxesGenerator() {
 
         // pushing Matter into Arrays for gas, solid, liquid, unkown
         if (periodicEl.phase === "Gas") {
-            
             gasMatterArray.push(periodicEl.symbol.toLowerCase());
-
         } else if (periodicEl.phase === "Solid" && periodicEl.number < 104) {
-
             solidMatterArray.push(periodicEl.symbol.toLowerCase());
-        
         } else if (periodicEl.phase === "Liquid") {
-
             liquidMatterArray.push(periodicEl.symbol.toLowerCase());
         } else if (periodicEl.number > 103) {
             notNaturalMatterArray.push(periodicEl.symbol.toLowerCase());
@@ -276,25 +288,16 @@ function elementBoxesColorConfiguration() {
 };
 
 
-function mattterCategorizationConfigurator() {
 
-    gasMatterArray.forEach(element => {
-        document.querySelector("#" + element + " .number").style.color = "#FE0101";
-    });
-    
-    solidMatterArray.forEach(element => {
-        document.querySelector("#" + element + " .number").style.color = "#010101";
+function matterCategorizationConfigurator() {
+
+    matterCategoriesArray.forEach(element => {
+        element[1].elementsIdArray.forEach(configurator => {
+            document.querySelector("#" + configurator + " .number").style.color = element[1].colorBackground;
+        });
     });
 
-    liquidMatterArray.forEach(element => {
-        document.querySelector("#" + element + " .number").style.color = "#288300";
-    });
-    
-    notNaturalMatterArray.forEach(element => {
-        document.querySelector("#" + element + " .number").style.color = "#868686";
-    });
 };
-
 
 function periodicTablePresenterGenerator() {
 
@@ -355,5 +358,59 @@ function periodicTablePresenterGenerator() {
     });    
 };
 
+function matterTypesBtnConfiguration() {
+    matterTypesArray.forEach((configurator) => {
+
+        initMatterTypesBtn();
+
+        document.querySelector(configurator[1].elementsClassName).addEventListener("mouseover", function() {
+            configurator[1].elementBtn.style.backgroundColor = configurator[1].colorHovered;
+            configurator[1].elementBtn.style.color = configurator[1].colorFont;
+            configurator[1].elementBtn.style.boxShadow = boxShadowBtn;
+        });
+
+        document.querySelector(configurator[1].elementsClassName).addEventListener("mouseleave", function() {
+            initMatterTypesBtn();
+        });
+    });
+};
+
+function initMatterTypesBtn() {
+    matterTypesArray.forEach((configurator) => {
+        configurator[1].elementBtn.style.backgroundColor = configurator[1].colorBackground;
+        configurator[1].elementBtn.style.boxShadow = "";
+    });
+};
+
+function matterCategoriesBtnConfiguration() {
+    matterCategoriesArray.forEach((configurator, e) => {
+
+        initMatterCategorizationBtn();
+
+        document.querySelector(configurator[1].elementsClassName).addEventListener("mouseover", function() {
+
+            configurator[1].elementBtn.style.backgroundColor = configurator[1].colorHovered;
+            configurator[1].elementBtn.style.color = configurator[1].colorFont;
+
+            configurator[1].elementBtn.style.boxShadow = boxShadowBtn;
+
+        });
+
+        document.querySelector(configurator[1].elementsClassName).addEventListener("mouseleave", function() {
+
+            initMatterCategorizationBtn();
+
+        });
+
+    });
+};
+
+function initMatterCategorizationBtn() {
+    matterCategoriesArray.forEach((configurator) => {
+        configurator[1].elementBtn.style.backgroundColor = configurator[1].colorBackground;
+        configurator[1].elementBtn.style.color = configurator[1].colorFont;
+        configurator[1].elementBtn.style.boxShadow = "";
+    });
+};
 
 //[].forEach.call(document.querySelectorAll("*"),function(a){a.style.outline="1px solid #"+(~~(Math.random()*(1<<24))).toString(16)})
