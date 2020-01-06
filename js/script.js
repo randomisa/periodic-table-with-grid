@@ -36,9 +36,10 @@ let unknownMatterArray = [];
 let metalHeadlineMatterTypesBtn = document.querySelector(".metal_headline");
 let nonMetalMatterTypesBtn = document.querySelector("nonmetal_headline");
 
-function MatterTypesBtnProperties(colorBackground, colorHovered, noSelection, elementsClassName, elementsIdArray) {
+function MatterTypesBtnProperties(colorBackground, colorHovered, colorFont, noSelection, elementsClassName, elementsIdArray) {
     this.colorBackground = colorBackground;
     this.colorHovered = colorHovered;
+    this.colorFont = colorFont;
     this.noSelection = noSelection;
     this.elementsClassName = elementsClassName;
     this.elementBtn = document.querySelector(elementsClassName);
@@ -46,16 +47,16 @@ function MatterTypesBtnProperties(colorBackground, colorHovered, noSelection, el
 };
 
 const matterTypes = {
-    alkaliMetal: new MatterTypesBtnProperties("rgb(197, 212, 255)", "rgb(160, 185, 255)", "green", ".alkali-metal", alkaliMetalArray),
-    alkalineEarthMetal: new MatterTypesBtnProperties("rgb(255, 148, 148)", "rgb(230, 127, 127)", "green", ".alkaline-earth-metal", alkalineEarthMetalArray),
-    lanthanide: new MatterTypesBtnProperties("#c3ffc7", "rgb(167, 226, 171)", "green", ".lanthanide", lanthanideArray),
-    actinide: new MatterTypesBtnProperties("rgb(84, 181, 91)", "rgb(63, 136, 68)", "green", ".actinide", actinideArray),
-    transitionMetal: new MatterTypesBtnProperties("rgb(255, 202, 164)", "rgb(218, 170, 135)", "green", ".transition-metal", transitionMetalArray),
-    postTransitionMetal: new MatterTypesBtnProperties("#cddc39", "rgb(180, 193, 53)", "green", ".post-transition-metal", postTransitionMetalArray),
-    metalloids: new MatterTypesBtnProperties("#c0a5f1", "rgb(144, 125, 179)", "green", ".metalloids", metalloidsArray),
-    reactiveNonmetal: new MatterTypesBtnProperties("rgb(253, 255, 156)", "rgb(239, 241, 158)", "green", ".reactive-nonmetal", reactiveNonmetalArray),
-    nobleGas: new MatterTypesBtnProperties("rgb(182, 238, 255)", "rgb(158, 202, 216)", "green", ".noble-gas", nobleGasArray),
-    unknownMatter: new MatterTypesBtnProperties("#fef3ff", "rgb(236, 226, 236)", "green", ".unknown-properties", unknownMatterArray)
+    alkaliMetal: new MatterTypesBtnProperties("rgb(197, 212, 255)", "rgb(160, 185, 255)", "black", "green", ".alkali-metal", alkaliMetalArray),
+    alkalineEarthMetal: new MatterTypesBtnProperties("rgb(255, 148, 148)", "rgb(230, 127, 127)", "black", "green", ".alkaline-earth-metal", alkalineEarthMetalArray),
+    lanthanide: new MatterTypesBtnProperties("#c3ffc7", "rgb(167, 226, 171)", "black", "green", ".lanthanide", lanthanideArray),
+    actinide: new MatterTypesBtnProperties("rgb(84, 181, 91)", "rgb(63, 136, 68)", "black", "green", ".actinide", actinideArray),
+    transitionMetal: new MatterTypesBtnProperties("rgb(255, 202, 164)", "rgb(218, 170, 135)", "black", "green", ".transition-metal", transitionMetalArray),
+    postTransitionMetal: new MatterTypesBtnProperties("#cddc39", "rgb(180, 193, 53)", "black", "green", ".post-transition-metal", postTransitionMetalArray),
+    metalloids: new MatterTypesBtnProperties("#c0a5f1", "rgb(144, 125, 179)", "black", "green", ".metalloids", metalloidsArray),
+    reactiveNonmetal: new MatterTypesBtnProperties("rgb(253, 255, 156)", "rgb(239, 241, 158)", "black", "green", ".reactive-nonmetal", reactiveNonmetalArray),
+    nobleGas: new MatterTypesBtnProperties("rgb(182, 238, 255)", "rgb(158, 202, 216)", "black", "green", ".noble-gas", nobleGasArray),
+    unknownMatter: new MatterTypesBtnProperties("#fef3ff", "rgb(236, 226, 236)", "black", "green", ".unknown-properties", unknownMatterArray)
 };
 
 const matterTypesArray = Object.values(matterTypes);
@@ -112,6 +113,7 @@ matterCategorizationConfigurator();
 /******************************************************************
 // 5. PeriodicTable_Presenter
 // ******************************************************************/
+togglePresenterVisibility(false);
 periodicTablePresenterGenerator();
 
 // matterTypesBtn.forEach(matterTypesBtnConfigurator => {
@@ -120,13 +122,15 @@ periodicTablePresenterGenerator();
 //     });
 // });
 
+function togglePresenterVisibility(presenterVisibility) {
+    document.querySelector(".presenter").style.display = presenterVisibility ? 'block' : 'none';
+}
+
 /******************************************************************
 // 5. Matter Types Buttons
 ******************************************************************/
 
 matterTypesBtnConfiguration();
-
-doSomething();
 
 console.log(matterTypesArray);
 
@@ -193,7 +197,6 @@ function columnGenerator() {
 
 
 function elementBoxesGenerator() {
-
     // generate div
     periodicTable.elements.forEach((periodicEl) => {
         
@@ -291,7 +294,6 @@ function elementBoxesColorConfiguration() {
 };
 
 
-
 function matterCategorizationConfigurator() {
 
     matterCategoriesArray.forEach(element => {
@@ -302,8 +304,9 @@ function matterCategorizationConfigurator() {
 
 };
 
-function periodicTablePresenterGenerator() {
 
+function periodicTablePresenterGenerator() {
+    
     // for presenter
     let elementBoxes = document.querySelectorAll(".el_box");
     let presenterBox = document.querySelector(".presenter");
@@ -315,10 +318,18 @@ function periodicTablePresenterGenerator() {
 
     elementBoxes.forEach(element => {
         element.addEventListener("mouseover", function(e) {
+
+            togglePresenterVisibility(true);
             
             // Change background color
             presenterBox.style.backgroundColor = e.currentTarget.style.backgroundColor;
-    
+            presenterBox.style.color = e.currentTarget.style.color;
+            presenterNumber.style.color = document.querySelector("#" + e.currentTarget.id + " .number").style.color;
+            presenterNumber.style.color = e.currentTarget.querySelector(".number").style.color;
+            presenterSymbol.style.color = e.currentTarget.style.color;
+            presenterName.style.color = e.currentTarget.style.color;
+            presenterAtomicMass.style.color = e.currentTarget.style.color;
+
             // Change Number
             const hoveredNumber = e.currentTarget.querySelector('.number').innerHTML;
             presenterNumber.innerHTML = periodicTable.elements[hoveredNumber - 1].number;
@@ -357,6 +368,9 @@ function periodicTablePresenterGenerator() {
                     document.querySelector(".presenter .p_shells").append(domElementShells);
     
                 });
+            element.addEventListener("mouseleave", function() {
+                togglePresenterVisibility(false);
+            });
         });
     });    
 };
@@ -366,12 +380,8 @@ function matterTypesBtnConfiguration() {
 
         initMatterTypesBtn();
 
-        function foooo () {
-            console.log('hallo isabel');
-        }
-
         document.querySelector(configurator.elementsClassName).addEventListener("mouseover", function() {
-            layoutBtnClicked(configurator.elementBtn, configurator);
+            btnHoverOrClickLayout(configurator.elementBtn, configurator);
         });
 
         document.querySelector(configurator.elementsClassName).addEventListener("mouseleave", function() {
@@ -380,24 +390,45 @@ function matterTypesBtnConfiguration() {
     });
 };
 
-function layoutBtnClicked(elementDOM, element) {
+function btnHoverOrClickLayout(elementDOM, element) {
     elementDOM.style.backgroundColor = element.colorHovered;
     elementDOM.style.color = element.colorFont;
     elementDOM.style.boxShadow = boxShadowBtn;
-
-    console.log('method called');
 };
 
-function doSomething() {
-    matterTypesArray.forEach((configurator) => {
+doSomething(matterTypesArray);
+doSomething(matterCategoriesArray);
 
-        initMatterTypesBtn();
+function doSomething(matterArray) {
+    matterArray.forEach((configurator) => {
 
         document.querySelector(configurator.elementsClassName).addEventListener("click", function(e) {
-            
+
+            let something = configurator.elementsClassName;
+            let currentBtn = e.currentTarget.classList;
+
+            if (something) {
+                btnHoverOrClickLayout(configurator.elementBtn, configurator);
+
+                configurator.elementsIdArray.forEach(element => {
+                    document.querySelector("#" + element).style.backgroundColor = configurator.colorBackground;
+                    
+                    if (matterArray === matterCategoriesArray) {
+                        document.querySelector("#" + element).style.color = configurator.colorFont;
+                        document.querySelector("#" + element + " .number").style.color = configurator.colorFont;
+                    } else if (matterArray === matterTypesArray) {
+                        matterCategorizationConfigurator();
+                        document.querySelector("#" + element).style.color = configurator.colorFont;
+                    }                  
+                });
+            } else if (something){
+                console.log("Nothing was done");
+            };
         });
     });
 };
+
+console.log(matterTypesArray);
 
 function initMatterTypesBtn() {
     matterTypesArray.forEach((configurator) => {
