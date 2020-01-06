@@ -124,9 +124,7 @@ periodicTablePresenterGenerator();
 // 5. Matter Types Buttons
 ******************************************************************/
 
-matterTypesBtnConfiguration();
-
-doSomething();
+// matterTypesBtnConfiguration();
 
 console.log(matterTypesArray);
 
@@ -366,12 +364,8 @@ function matterTypesBtnConfiguration() {
 
         initMatterTypesBtn();
 
-        function foooo () {
-            console.log('hallo isabel');
-        }
-
         document.querySelector(configurator.elementsClassName).addEventListener("mouseover", function() {
-            layoutBtnClicked(configurator.elementBtn, configurator);
+            btnHoverOrClickLayout(configurator.elementBtn, configurator);
         });
 
         document.querySelector(configurator.elementsClassName).addEventListener("mouseleave", function() {
@@ -380,21 +374,32 @@ function matterTypesBtnConfiguration() {
     });
 };
 
-function layoutBtnClicked(elementDOM, element) {
+function btnHoverOrClickLayout(elementDOM, element) {
     elementDOM.style.backgroundColor = element.colorHovered;
     elementDOM.style.color = element.colorFont;
     elementDOM.style.boxShadow = boxShadowBtn;
-
-    console.log('method called');
 };
 
-function doSomething() {
-    matterTypesArray.forEach((configurator) => {
+doSomething(matterTypesArray);
 
-        initMatterTypesBtn();
+function doSomething(matterArray) {
+    matterArray.forEach((configurator) => {
 
         document.querySelector(configurator.elementsClassName).addEventListener("click", function(e) {
-            
+
+            let something = configurator.elementsClassName;
+            let currentBtn = e.currentTarget.classList;
+
+            if (something) {
+                console.log("something works");
+                btnHoverOrClickLayout(configurator.elementBtn, configurator);
+
+                configurator.elementsIdArray.forEach(element => {
+                    document.querySelector("#" + element).style.backgroundColor = configurator.colorBackground;                   
+                });
+            } else {
+                console.log("Nothing was done");
+            }
         });
     });
 };
