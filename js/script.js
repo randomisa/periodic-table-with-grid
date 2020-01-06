@@ -48,17 +48,18 @@ function MatterTypesBtnProperties(colorBackground, colorHovered, noSelection, el
 const matterTypes = {
     alkaliMetal: new MatterTypesBtnProperties("rgb(197, 212, 255)", "rgb(160, 185, 255)", "green", ".alkali-metal", alkaliMetalArray),
     alkalineEarthMetal: new MatterTypesBtnProperties("rgb(255, 148, 148)", "rgb(230, 127, 127)", "green", ".alkaline-earth-metal", alkalineEarthMetalArray),
-    lanthanide: new MatterTypesBtnProperties("#c3ffc7", "pink", "green", ".lanthanide", lanthanideArray),
-    actinide: new MatterTypesBtnProperties("rgb(84, 181, 91)", "pink", "green", ".actinide", actinideArray),
-    transitionMetal: new MatterTypesBtnProperties("rgb(255, 202, 164)", "pink", "green", ".transition-metal", transitionMetalArray),
-    postTransitionMetal: new MatterTypesBtnProperties("#cddc39", "pink", "green", ".post-transition-metal", postTransitionMetalArray),
-    metalloids: new MatterTypesBtnProperties("#c0a5f1", "pink", "green", ".metalloids", metalloidsArray),
-    reactiveNonmetal: new MatterTypesBtnProperties("rgb(253, 255, 156)", "pink", "green", ".reactive-nonmetal", reactiveNonmetalArray),
-    nobleGas: new MatterTypesBtnProperties("rgb(182, 238, 255)", "pink", "green", ".noble-gas", nobleGasArray),
-    unknownMatter: new MatterTypesBtnProperties("#fef3ff", "pink", "green", ".unknown-properties", unknownMatterArray)
+    lanthanide: new MatterTypesBtnProperties("#c3ffc7", "rgb(167, 226, 171)", "green", ".lanthanide", lanthanideArray),
+    actinide: new MatterTypesBtnProperties("rgb(84, 181, 91)", "rgb(63, 136, 68)", "green", ".actinide", actinideArray),
+    transitionMetal: new MatterTypesBtnProperties("rgb(255, 202, 164)", "rgb(218, 170, 135)", "green", ".transition-metal", transitionMetalArray),
+    postTransitionMetal: new MatterTypesBtnProperties("#cddc39", "rgb(180, 193, 53)", "green", ".post-transition-metal", postTransitionMetalArray),
+    metalloids: new MatterTypesBtnProperties("#c0a5f1", "rgb(144, 125, 179)", "green", ".metalloids", metalloidsArray),
+    reactiveNonmetal: new MatterTypesBtnProperties("rgb(253, 255, 156)", "rgb(239, 241, 158)", "green", ".reactive-nonmetal", reactiveNonmetalArray),
+    nobleGas: new MatterTypesBtnProperties("rgb(182, 238, 255)", "rgb(158, 202, 216)", "green", ".noble-gas", nobleGasArray),
+    unknownMatter: new MatterTypesBtnProperties("#fef3ff", "rgb(236, 226, 236)", "green", ".unknown-properties", unknownMatterArray)
 };
 
-const matterTypesArray = Object.entries(matterTypes);
+const matterTypesArray = Object.values(matterTypes);
+
 
 
 function matterCategoryBtnProperties(colorBackground, colorHovered, colorFont, noSelection, elementsClassName, elementsIdArray) {
@@ -78,7 +79,7 @@ const matterCategories = {
     unknown: new matterCategoryBtnProperties("#868686", "rgb(185, 185, 185)", "white", "violet", ".unknown", notNaturalMatterArray),
 };
 
-const matterCategoriesArray = Object.entries(matterCategories);
+const matterCategoriesArray = Object.values(matterCategories);
 console.log(matterCategoriesArray);
 
 
@@ -124,6 +125,8 @@ periodicTablePresenterGenerator();
 ******************************************************************/
 
 matterTypesBtnConfiguration();
+
+doSomething();
 
 console.log(matterTypesArray);
 
@@ -280,8 +283,8 @@ function elementBoxesGenerator() {
 
 function elementBoxesColorConfiguration() {
     matterTypesArray.forEach((backgroundColorConfiguration) => {
-        backgroundColorConfiguration[1].elementsIdArray.forEach((id) => {
-            document.querySelector("#" + id).style.backgroundColor = backgroundColorConfiguration[1].colorBackground;
+        backgroundColorConfiguration.elementsIdArray.forEach((id) => {
+            document.querySelector("#" + id).style.backgroundColor = backgroundColorConfiguration.colorBackground;
             console.log("The elementsBoxesColorCOnfiguration Thing works!!!");
         });
     });
@@ -292,8 +295,8 @@ function elementBoxesColorConfiguration() {
 function matterCategorizationConfigurator() {
 
     matterCategoriesArray.forEach(element => {
-        element[1].elementsIdArray.forEach(configurator => {
-            document.querySelector("#" + configurator + " .number").style.color = element[1].colorBackground;
+        element.elementsIdArray.forEach(configurator => {
+            document.querySelector("#" + configurator + " .number").style.color = element.colorBackground;
         });
     });
 
@@ -359,26 +362,47 @@ function periodicTablePresenterGenerator() {
 };
 
 function matterTypesBtnConfiguration() {
+    matterTypesArray.forEach((configurator, e) => {
+
+        initMatterTypesBtn();
+
+        function foooo () {
+            console.log('hallo isabel');
+        }
+
+        document.querySelector(configurator.elementsClassName).addEventListener("mouseover", function() {
+            layoutBtnClicked(configurator.elementBtn, configurator);
+        });
+
+        document.querySelector(configurator.elementsClassName).addEventListener("mouseleave", function() {
+            initMatterTypesBtn();
+        });
+    });
+};
+
+function layoutBtnClicked(elementDOM, element) {
+    elementDOM.style.backgroundColor = element.colorHovered;
+    elementDOM.style.color = element.colorFont;
+    elementDOM.style.boxShadow = boxShadowBtn;
+
+    console.log('method called');
+};
+
+function doSomething() {
     matterTypesArray.forEach((configurator) => {
 
         initMatterTypesBtn();
 
-        document.querySelector(configurator[1].elementsClassName).addEventListener("mouseover", function() {
-            configurator[1].elementBtn.style.backgroundColor = configurator[1].colorHovered;
-            configurator[1].elementBtn.style.color = configurator[1].colorFont;
-            configurator[1].elementBtn.style.boxShadow = boxShadowBtn;
-        });
-
-        document.querySelector(configurator[1].elementsClassName).addEventListener("mouseleave", function() {
-            initMatterTypesBtn();
+        document.querySelector(configurator.elementsClassName).addEventListener("click", function(e) {
+            
         });
     });
 };
 
 function initMatterTypesBtn() {
     matterTypesArray.forEach((configurator) => {
-        configurator[1].elementBtn.style.backgroundColor = configurator[1].colorBackground;
-        configurator[1].elementBtn.style.boxShadow = "";
+        configurator.elementBtn.style.backgroundColor = configurator.colorBackground;
+        configurator.elementBtn.style.boxShadow = "";
     });
 };
 
@@ -387,16 +411,15 @@ function matterCategoriesBtnConfiguration() {
 
         initMatterCategorizationBtn();
 
-        document.querySelector(configurator[1].elementsClassName).addEventListener("mouseover", function() {
+        document.querySelector(configurator.elementsClassName).addEventListener("mouseover", function() {
 
-            configurator[1].elementBtn.style.backgroundColor = configurator[1].colorHovered;
-            configurator[1].elementBtn.style.color = configurator[1].colorFont;
-
-            configurator[1].elementBtn.style.boxShadow = boxShadowBtn;
+            configurator.elementBtn.style.backgroundColor = configurator.colorHovered;
+            configurator.elementBtn.style.color = configurator.colorFont;
+            configurator.elementBtn.style.boxShadow = boxShadowBtn;
 
         });
 
-        document.querySelector(configurator[1].elementsClassName).addEventListener("mouseleave", function() {
+        document.querySelector(configurator.elementsClassName).addEventListener("mouseleave", function() {
 
             initMatterCategorizationBtn();
 
@@ -407,9 +430,9 @@ function matterCategoriesBtnConfiguration() {
 
 function initMatterCategorizationBtn() {
     matterCategoriesArray.forEach((configurator) => {
-        configurator[1].elementBtn.style.backgroundColor = configurator[1].colorBackground;
-        configurator[1].elementBtn.style.color = configurator[1].colorFont;
-        configurator[1].elementBtn.style.boxShadow = "";
+        configurator.elementBtn.style.backgroundColor = configurator.colorBackground;
+        configurator.elementBtn.style.color = configurator.colorFont;
+        configurator.elementBtn.style.boxShadow = "";
     });
 };
 
