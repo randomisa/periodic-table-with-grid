@@ -62,7 +62,6 @@ const matterTypes = {
 const matterTypesArray = Object.values(matterTypes);
 
 
-
 function matterCategoryBtnProperties(colorBackground, colorHovered, colorFont, noSelection, elementsClassName, elementsIdArray) {
     this.colorBackground = colorBackground;
     this.colorHovered = colorHovered;
@@ -116,15 +115,8 @@ matterCategorizationConfigurator();
 togglePresenterVisibility(false);
 periodicTablePresenterGenerator();
 
-// matterTypesBtn.forEach(matterTypesBtnConfigurator => {
-//     matterTypesBtnConfigurator.elementsIdArray.forEach(elementsQuerySelector => {
-//         elementsQuerySelector.style.backgroundColor = matterTypesBtnConfigurator.colorBackground;
-//     });
-// });
 
-function togglePresenterVisibility(presenterVisibility) {
-    document.querySelector(".presenter").style.display = presenterVisibility ? 'block' : 'none';
-}
+
 
 /******************************************************************
 // 5. Matter Types Buttons
@@ -132,13 +124,22 @@ function togglePresenterVisibility(presenterVisibility) {
 
 matterTypesBtnConfiguration();
 
-console.log(matterTypesArray);
+// change elementBox colors through matterButtons
+btnHoverOrClickChangeElementBox(matterTypesArray, matterCategoriesArray);
+changeWhenBtnNOTHovered(matterTypesArray);
+
+// console.log(matterTypesArray);
 
 /******************************************************************
 // 6. Matter Categorization Buttons
 ******************************************************************/
 
+
 matterCategoriesBtnConfiguration();
+
+// change elementBox color through matterButtons
+btnHoverOrClickChangeElementBox(matterCategoriesArray, matterTypesArray);
+changeWhenBtnNOTHovered(matterCategoriesArray);
 
 
 
@@ -288,6 +289,7 @@ function elementBoxesColorConfiguration() {
     matterTypesArray.forEach((backgroundColorConfiguration) => {
         backgroundColorConfiguration.elementsIdArray.forEach((id) => {
             document.querySelector("#" + id).style.backgroundColor = backgroundColorConfiguration.colorBackground;
+            document.querySelector("#" + id).style.color = backgroundColorConfiguration.colorFont;
             console.log("The elementsBoxesColorCOnfiguration Thing works!!!");
         });
     });
@@ -297,8 +299,8 @@ function elementBoxesColorConfiguration() {
 function matterCategorizationConfigurator() {
 
     matterCategoriesArray.forEach(element => {
-        element.elementsIdArray.forEach(configurator => {
-            document.querySelector("#" + configurator + " .number").style.color = element.colorBackground;
+        element.elementsIdArray.forEach(id => {
+            document.querySelector("#" + id + " .number").style.color = element.colorBackground;
         });
     });
 
@@ -396,18 +398,50 @@ function btnHoverOrClickLayout(elementDOM, element) {
     elementDOM.style.boxShadow = boxShadowBtn;
 };
 
-doSomething(matterTypesArray);
-doSomething(matterCategoriesArray);
 
-function doSomething(matterArray) {
+function changeWhenBtnNOTHovered(matterArray) {
+    matterArray.forEach((configurator, i) => {
+
+        document.querySelector(configurator.elementsClassName).addEventListener("mouseover", function(e) {
+
+            let originalMatterArray = matterArray;
+            let clonedMatterArray = originalMatterArray.slice();
+
+            let deletedElementFromArray = clonedMatterArray.splice(i, 1);
+
+            let newMatterArray = clonedMatterArray;
+
+
+            newMatterArray.forEach((configuratorForOtherButtons) => {
+                configuratorForOtherButtons.elementsIdArray.forEach(element => {
+                    document.querySelector("#" + element).style.backgroundColor = "#d2d2d2";
+                    document.querySelector("#" + element).style.color = "#ffffff";
+                    document.querySelector("#" + element + " .number").style.color = "#ffffff";
+                });
+
+            });
+
+            document.querySelector(configurator.elementsClassName).addEventListener("mouseleave", function(e) {
+                elementBoxesColorConfiguration();
+                matterCategorizationConfigurator();
+                console.log("I left the battle");
+            });
+        
+        });
+        
+
+    });
+};
+
+function btnHoverOrClickChangeElementBox(matterArray, otherMatterArray) {
     matterArray.forEach((configurator) => {
 
-        document.querySelector(configurator.elementsClassName).addEventListener("click", function(e) {
+        document.querySelector(configurator.elementsClassName).addEventListener("mouseover", function(e) {
 
-            let something = configurator.elementsClassName;
+            let chosenBtn = configurator.elementsClassName;
             let currentBtn = e.currentTarget.classList;
 
-            if (something) {
+            if (chosenBtn) {
                 btnHoverOrClickLayout(configurator.elementBtn, configurator);
 
                 configurator.elementsIdArray.forEach(element => {
@@ -416,15 +450,30 @@ function doSomething(matterArray) {
                     if (matterArray === matterCategoriesArray) {
                         document.querySelector("#" + element).style.color = configurator.colorFont;
                         document.querySelector("#" + element + " .number").style.color = configurator.colorFont;
-                    } else if (matterArray === matterTypesArray) {
-                        matterCategorizationConfigurator();
-                        document.querySelector("#" + element).style.color = configurator.colorFont;
-                    }                  
+                    } 
+                    // else if (matterArray === matterTypesArray) {
+                    //     // matterCategorizationConfigurator();
+                    //     document.querySelector("#" + element).style.color = otherMatterArray.colorFont;
+
+                    //     document.querySelector("#" + element + " .number").style.color = otherMatterArray.colorBackground;
+
+
+                    //     // otherMatterArray.forEach(otherElementId => {
+                    //     //     otherElementId.elementsIdArray.forEach(id => {
+                    //     //         document.querySelector("#" + id + " .number").style.color = otherMatterArray.colorBackground;
+                    //     //     });
+                    //     // });
+
+                    // }                  
                 });
-            } else if (something){
-                console.log("Nothing was done");
-            };
+            }; 
         });
+
+        document.querySelector(configurator.elementsClassName).addEventListener("mouseleave", function(e) {
+            elementBoxesColorConfiguration();
+            console.log("I left the battle");
+        });
+
     });
 };
 
@@ -466,5 +515,9 @@ function initMatterCategorizationBtn() {
         configurator.elementBtn.style.boxShadow = "";
     });
 };
+
+function togglePresenterVisibility(presenterVisibility) {
+    document.querySelector(".presenter").style.display = presenterVisibility ? 'block' : 'none';
+}
 
 //[].forEach.call(document.querySelectorAll("*"),function(a){a.style.outline="1px solid #"+(~~(Math.random()*(1<<24))).toString(16)})
